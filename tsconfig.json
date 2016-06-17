@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "declaration": true,
+    "listFiles": true,
+    "pretty": true,
+    "outDir": "dist/"
+  },
+  "files": [
+    "src/index.ts",
+    "src/generate-self.ts"
+  ],
+  "exclude": [
+    "dist",
+    "node_modules",
+    "typings"
+  ]
+}
