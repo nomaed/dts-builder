@@ -109,7 +109,9 @@ function optimizeImports(txtBuffer: string): string {
   result = sortInternals(internalImports).join('\n') + '\n' + result;
   result = removeReferences(result);
   result = removeDefaults(result);
-  // result = collapseExports(result);
+
+  // remove export * from ...
+  result = result.replace(patterns.externalReExports, '');
 
   return result;
 }

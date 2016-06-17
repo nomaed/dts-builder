@@ -2,7 +2,7 @@ import * as path from 'path';
 import { generateBundles } from './index';
 
 generateBundles([{
-  name: 'testBundle',
+  name: 'dtsBuilder',
   sourceDir: path.resolve(__dirname, '../dist'),
   destDir: path.resolve(__dirname, '..')
 }]);
