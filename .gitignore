@@ -3,4 +3,4 @@ dist/
 node_modules/
 typings/
 *.log
-dtsBuilder.d.ts
+dts-builder.d.ts
