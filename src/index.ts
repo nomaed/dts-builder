@@ -232,8 +232,11 @@ function addExternalRefs(bundle: Bundle) {
  * @returns {string}
  */
 function removeDefaults(text: string): string {
-  return text.replace(patterns.defaultExport, '');
+  return text
+    .replace(patterns.defaultExport, '')
+    .replace(patterns.defaultsFromNs, '');
 }
+
 
 /**
  * @param {string} text
