@@ -1,6 +1,6 @@
 {
   "name": "dts-builder",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Generates a definition library file from generated .d.ts sources",
   "main": "dist/index.js",
   "typings": "dts-builder.d.ts",
