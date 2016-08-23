@@ -135,11 +135,8 @@ function optimizeImports(txtBuffer: string): string {
   var result = txtBuffer.replace(patterns.externalModule, '');
 
   // get unique internal imports
-  var internalImports = getUnique(
-    result
-      .match(patterns.internalModule)
-      .map(imp => imp.toString().trim())
-  );
+  const matches = result.match(patterns.internalModule)
+  var internalImports = matches ? getUnique(matches.map(imp => imp.toString().trim())) : [];
 
   // remove internal imports
   result = result.replace(patterns.internalModule, '');
