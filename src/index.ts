@@ -82,6 +82,8 @@ export function generateBundles(bundles: Array<Bundle>): void {
     txtBuffer = optimizeImports(txtBuffer);
     log(' + Wrapping with module...');
     txtBuffer = moduleWrap(txtBuffer, bundle);
+    log(' + Removing empty lines...');
+    txtBuffer = cleanEmptyLines(txtBuffer);
 
     if (bundle.externals) {
       log(' + Adding external definition files...');
@@ -248,9 +250,24 @@ function moduleWrap(text: string, bundle: Bundle): string {
       .replace(/\bexport\s+declare\s+/, 'export ')
       .replace(/\bdeclare\s+(class|function|const|var|let)\s+/, '$1 ')
     );
-  lines.unshift('declare module ' + toCamel(bundle.name) + ' {');
+  lines.unshift('declare namespace ' + toCamel(bundle.name) + ' {');
   lines.push('}');
   return lines.join('\n');
+}
+
+/**
+ * Remove empty lines, when 2 or more in a sequence
+ * @param {string} text
+ * @returns {string}
+ */
+function cleanEmptyLines(text: string): string {
+  let prevEmpty = false;
+  return text.split('\n').filter(line => {
+    const isEmpty = !line.trim().length;
+    const keep = !isEmpty || !prevEmpty;
+    prevEmpty = isEmpty;
+    return keep;
+  }).join('\n');
 }
 
 /**
