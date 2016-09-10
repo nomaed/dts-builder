@@ -4,3 +4,4 @@ node_modules/
 typings/
 *.log
 dts-builder.d.ts
+.DS_Store

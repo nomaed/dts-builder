@@ -7,8 +7,6 @@ import { copyFile } from './lib/copy-file';
 import { findFiles } from './lib/find-files';
 import * as patterns from './lib/regexp-patterns';
 
-import ErrnoException = NodeJS.ErrnoException;
-
 /*****************************************************************************/
 
 export interface Bundle {
@@ -17,6 +15,13 @@ export interface Bundle {
    * @type {string}
    */
   name: string;
+
+  /**
+   * If specified, library will exported as the given value, as an alias together
+   * with the original name.
+   * @type {string}
+   */
+  alias?: string;
 
   /**
    * Location in which to search for *.d.ts files
@@ -91,7 +96,7 @@ export function generateBundles(bundles: Array<Bundle>): void {
     }
     const destFile: string = pathAppend(bundle.destDir, `${toKebab(bundle.name)}.d.ts`);
     log(' +-> Saving %s...', destFile);
-    fs.writeFile(destFile, txtBuffer, (err: ErrnoException) => {
+    fs.writeFile(destFile, txtBuffer, (err: NodeJS.ErrnoException) => {
       if (err) {
         throw new Error(err.message);
       }
@@ -111,7 +116,7 @@ function toKebab(name: string): string {
 function toCamel(name: string): string {
   if (!name) return null;
   let parts = name.split(/\W+/).map(part => part.toLowerCase());
-  for(let i=1; i<parts.length; i++) {
+  for (let i = 1; i < parts.length; i++) {
     parts[i] = parts[i].charAt(0).toUpperCase() + parts[i].substr(1);
   }
   return parts.join('');
@@ -244,14 +249,24 @@ function removeDefaults(text: string): string {
  */
 function moduleWrap(text: string, bundle: Bundle): string {
   log(' * Converting to module...');
+  const camelName = toCamel(bundle.name);
   let lines = text
     .split('\n')
     .map(line => '  ' + line
       .replace(/\bexport\s+declare\s+/, 'export ')
       .replace(/\bdeclare\s+(class|function|const|var|let)\s+/, '$1 ')
     );
-  lines.unshift('declare namespace ' + toCamel(bundle.name) + ' {');
+  lines.unshift(`
+declare module '${camelName}' {
+  export = ${camelName}; 
+}
+
+declare namespace ${camelName} {`);
   lines.push('}');
+  // add alias
+  if (bundle.alias) {
+    lines.unshift(`import ${bundle.alias} = ${camelName};`);
+  }
   return lines.join('\n');
 }
 

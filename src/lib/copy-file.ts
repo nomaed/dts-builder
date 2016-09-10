@@ -1,5 +1,4 @@
 import * as fs from "fs";
-import ErrnoException = NodeJS.ErrnoException;
 
 /**
  * @link http://stackoverflow.com/a/14387791
@@ -7,7 +6,7 @@ import ErrnoException = NodeJS.ErrnoException;
  * @param {string} target filename
  * @param {Function} cb
  */
-export function copyFile(source: string, target: string, cb: (err: ErrnoException, target: string) => any) {
+export function copyFile(source: string, target: string, cb: (err: NodeJS.ErrnoException, target: string) => any) {
 
   const rd = fs.createReadStream(source);
   const wr = fs.createWriteStream(target);
@@ -19,8 +18,8 @@ export function copyFile(source: string, target: string, cb: (err: ErrnoExceptio
     cbCalled = true;
   };
 
-  rd.on("error", (err: ErrnoException) => { done(err); });
-  wr.on("error", (err: ErrnoException) => { done(err); });
+  rd.on("error", (err: NodeJS.ErrnoException) => { done(err); });
+  wr.on("error", (err: NodeJS.ErrnoException) => { done(err); });
   wr.on("close", () => { done(null, target); });
 
   rd.pipe(wr);
