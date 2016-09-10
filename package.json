@@ -7,7 +7,6 @@
   "scripts": {
     "clean": "rm -rf dist typings",
     "prepublish": "npm run build",
-    "prebuild": "npm update && node node_modules/.bin/typings install",
     "build": "node node_modules/.bin/tsc && node ./dist/generate-self",
     "test": "node test.js"
   },

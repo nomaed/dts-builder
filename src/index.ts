@@ -40,7 +40,7 @@ export interface Bundle {
    * directory, and will be referenced from withing the main d.ts file
    * @type {Array<string>}
    */
-  externals?: Array<string>
+  externals?: Array<string>;
 }
 
 /**
@@ -80,7 +80,7 @@ export function generateBundles(bundles: Array<Bundle>): void {
 
     log(' + Concatenating definitions to a single file');
     const binBuffers: Array<Buffer> = dtsFiles.map(file => fs.readFileSync(file));
-    let txtBuffer: string = binBuffers.map(buffer => buffer.toString()).join("\n");
+    let txtBuffer: string = binBuffers.map(buffer => buffer.toString()).join('\n');
     log('   + Done, total size: %d characters', txtBuffer.length);
 
     log(' + Optimizing imports...');
@@ -139,16 +139,16 @@ function pathAppend(src: string, dst: string): string {
  */
 function optimizeImports(txtBuffer: string): string {
   // remove imports
-  var result = txtBuffer.replace(patterns.externalModule, '');
+  let result = txtBuffer.replace(patterns.externalModule, '');
 
   // get unique internal imports
-  const matches = result.match(patterns.internalModule)
-  var internalImports = matches ? getUnique(matches.map(imp => imp.toString().trim())) : [];
+  const matches = result.match(patterns.internalModule);
+  const internalImports = matches ? getUnique(matches.map(imp => imp.toString().trim())) : [];
 
   // remove internal imports
   result = result.replace(patterns.internalModule, '');
 
-  var remaining = result.match(/\bimport\b/);
+  const remaining = result.match(/\bimport\b/);
   if (remaining && remaining.length) {
     console.error('Could not deal with the following:', JSON.stringify(remaining, null, 2));
   }
@@ -160,6 +160,9 @@ function optimizeImports(txtBuffer: string): string {
 
   // remove export * from ...
   result = result.replace(patterns.externalReExports, '');
+
+  // remove export declarations
+  result = result.replace(patterns.exportDeclarations, '');
 
   return result;
 }
@@ -258,7 +261,7 @@ function moduleWrap(text: string, bundle: Bundle): string {
     );
   lines.unshift(`
 declare module '${camelName}' {
-  export = ${camelName}; 
+  export = ${camelName};
 }
 
 declare namespace ${camelName} {`);
