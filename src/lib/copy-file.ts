@@ -6,13 +6,13 @@ import * as fs from "fs";
  * @param {string} target filename
  * @param {Function} cb
  */
-export function copyFile(source: string, target: string, cb: (err: NodeJS.ErrnoException, target: string) => any) {
+export function copyFile(source: string, target: string, cb: (err?: NodeJS.ErrnoException, target?: string) => any) {
 
   const rd = fs.createReadStream(source);
   const wr = fs.createWriteStream(target);
 
   let cbCalled = false;
-  const done = (err: NodeJS.ErrnoException, res?: string) => {
+  const done = (err?: NodeJS.ErrnoException, res?: string) => {
     if (cbCalled) return;
     cb(err, res);
     cbCalled = true;
@@ -20,7 +20,7 @@ export function copyFile(source: string, target: string, cb: (err: NodeJS.ErrnoE
 
   rd.on("error", (err: NodeJS.ErrnoException) => { done(err); });
   wr.on("error", (err: NodeJS.ErrnoException) => { done(err); });
-  wr.on("close", () => { done(null, target); });
+  wr.on("close", () => { done(undefined, target); });
 
   rd.pipe(wr);
 }

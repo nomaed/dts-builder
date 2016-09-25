@@ -1,11 +1,11 @@
-import * as fs from 'fs';
+import * as fs from "fs";
 
 export function findFiles(dir: string, match: RegExp = /\.d\.ts$/): Array<string> {
-  if (!dir || typeof dir !== 'string') {
-    throw new TypeError('Invalid directory');
+  if (!dir || typeof dir !== "string") {
+    throw new TypeError("Invalid directory");
   }
   if (!(match instanceof RegExp)) {
-    throw new TypeError('Invalid match regexp');
+    throw new TypeError("Invalid match regexp");
   }
   return getMatches(dir, match);
 }
@@ -30,7 +30,7 @@ function getMatches(dir: string, match: RegExp): Array<string> {
     } else if (stat.isDirectory()) {
       dirs.push(path);
     } else {
-      console.warn('DBG: Unknown file', stat);
+      console.warn("DBG: Unknown file", stat);
     }
   });
 
