@@ -3,9 +3,9 @@
   "version": "1.0.8",
   "description": "Generates a definition library file from generated .d.ts sources",
   "main": "dist/index.js",
-  "typings": "dts-builder.d.ts",
+  "types": "dts-builder.d.ts",
   "scripts": {
-    "clean": "rm -rf dist typings",
+    "clean": "rm -rf dist",
     "prepublish": "npm run build",
     "build": "npm run lint && tsc && node ./dist/generate-self",
     "lint": "tslint --project tsconfig.json --config tslint.json --format verbose",
@@ -28,10 +28,10 @@
   },
   "homepage": "https://github.com/nomaed/dts-builder#readme",
   "devDependencies": {
+    "@types/node": "^7.0.5",
     "chai": "^3.5.0",
     "mocha": "^2.5.3",
-    "tslint": "^4.0.1",
-    "typescript": "^2.0.10",
-    "typings": "^2.0.0"
+    "tslint": "^4.4.2",
+    "typescript": "^2.2.0"
   }
 }

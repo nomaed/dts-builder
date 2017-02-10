@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es5",
+    "target": "es6",
     "noImplicitAny": true,
     "strictNullChecks": true,
     "sourceMap": true,
@@ -9,6 +9,9 @@
     "listFiles": true,
     "pretty": true,
     "outDir": "dist/"
+  },
+  "typeAcquisition": {
+    "enable": true
   },
   "files": [
     "src/index.ts",
