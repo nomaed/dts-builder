@@ -1,16 +1,89 @@
 import * as path from "path";
 import * as fs from "fs";
+import * as mkdirp from "mkdirp";
 
 import { Bundle } from "../types";
 import { log } from "./log";
 import { copyFile } from "./copy-file";
+import { findFiles } from "./find-files";
 import * as patterns from "./regexp-patterns";
+
+export function generateSingleBundle(bundle: Bundle): Promise<string> {
+  return new Promise((resolve, reject) => {
+    log("> Generating bundle %s", bundle.name);
+
+    if (!bundle.sourceDir) {
+      reject(`No sourceDir was specified for bundle ${bundle.name}`);
+      return;
+    }
+
+    log(" + Gathering definitions from %s/**/*.d.ts", bundle.sourceDir);
+    findFiles(bundle.sourceDir)
+      .then(filesToString)
+      .then(txtBuffer => {
+        log("   + Total size: %d characters", txtBuffer.length);
+
+        log(" + Optimizing imports...");
+        txtBuffer = optimizeImports(txtBuffer);
+        log(" + Wrapping with module...");
+        txtBuffer = moduleWrap(txtBuffer, bundle);
+        log(" + Removing empty lines...");
+        txtBuffer = cleanEmptyLines(txtBuffer);
+
+        if (bundle.externals) {
+          log(" + Adding external definition files...");
+          txtBuffer = addExternalRefs(bundle) + "\n" + txtBuffer;
+        }
+
+        if (!fs.existsSync(bundle.destDir)) {
+          mkdirp(bundle.destDir, (err) => {
+            if (err) {
+              reject(`Unable to generate bundle ${bundle.name}: ${err}`);
+            }
+            else {
+              log(" + Created destrination directory: %s", bundle.destDir);
+              writeResult(bundle, txtBuffer)
+                .then(() => resolve(bundle.name));
+            }
+          });
+        }
+        else {
+          writeResult(bundle, txtBuffer)
+            .then(() => resolve(bundle.name));
+        }
+      })
+      .catch(reason => {
+        reject(`Failed generating bundle "${bundle.name}": ${reason}`);
+      });
+  });
+}
+
+/*******************************************
+ *** Internal
+ *******************************************/
+
+function filesToString(files: Array<string>): Promise<string> {
+  if (!Array.isArray(files) || !files.length) {
+    log("No definition files were found for bundle");
+    return Promise.reject(`No defnition files`);
+  }
+
+  return new Promise((resolve, reject) => {
+    log("   + Found %d definition files.", files.length);
+    log(" + Concatenating definitions to a single file");
+    resolve(files
+      .map(file => fs.readFileSync(file))
+      .map(buffer => buffer.toString())
+      .join("\n")
+    );
+  });
+}
 
 /**
  * @param {string} txtBuffer
  * @returns {string}
  */
-export function optimizeImports(txtBuffer: string): string {
+function optimizeImports(txtBuffer: string): string {
   // remove imports
   let result = txtBuffer.replace(patterns.externalModule, "");
 
@@ -23,7 +96,7 @@ export function optimizeImports(txtBuffer: string): string {
 
   const remaining = result.match(/\bimport\b/);
   if (remaining && remaining.length) {
-    console.error("Could not deal with the following:", JSON.stringify(remaining, null, 2));
+    throw new Error(`optimizeImports() could not deal with the following: ${JSON.stringify(remaining, null, 2)}`);
   }
 
   // add internals
@@ -45,7 +118,7 @@ export function optimizeImports(txtBuffer: string): string {
  * @param {Bundle} bundle
  * @returns {string}
  */
-export function moduleWrap(text: string, bundle: Bundle): string {
+function moduleWrap(text: string, bundle: Bundle): string {
   log(" * Converting to module...");
   const camelName = toCamel(bundle.name);
   let lines = text
@@ -73,7 +146,7 @@ declare namespace ${camelName} {`);
  * @param {string} text
  * @returns {string}
  */
-export function cleanEmptyLines(text: string): string {
+function cleanEmptyLines(text: string): string {
   let prevEmpty = false;
   return text.split("\n").filter(line => {
     const isEmpty = !line.trim().length;
@@ -87,7 +160,7 @@ export function cleanEmptyLines(text: string): string {
  * @param {Bundle} bundle
  * @returns {string}
  */
-export function addExternalRefs(bundle: Bundle) {
+function addExternalRefs(bundle: Bundle) {
   if (!bundle || !bundle.externals) return "";
   const res = bundle.externals.map(ref => {
     const fileName = path.basename(ref);
@@ -104,22 +177,19 @@ export function addExternalRefs(bundle: Bundle) {
   return res.join("\n");
 }
 
-export function writeResult(bundle: Bundle, buffer: string) {
-  const destFile = pathAppend(bundle.destDir, `${toKebab(bundle.name)}.d.ts`);
-  log(" +-> Saving %s...", destFile);
-  fs.writeFile(destFile, buffer, (err: NodeJS.ErrnoException) => {
-    if (err) {
-      throw new Error(err.message);
-    }
-    log('! "%s" bundle is ready', bundle.name);
+function writeResult(bundle: Bundle, buffer: string): Promise<any> {
+  return new Promise((resolve, reject) => {
+    const destFile = pathAppend(bundle.destDir, `${toKebab(bundle.name)}.d.ts`);
+    log(" +-> Saving %s...", destFile);
+    fs.writeFile(destFile, buffer, (err: NodeJS.ErrnoException) => {
+      if (err) {
+        throw new Error(err.message);
+      }
+      log('! "%s" bundle is ready', bundle.name);
+      resolve();
+    });
   });
 }
-
-
-/*******************************************
- *** Internal
- *******************************************/
-
 
 function toKebab(name: string): string {
   if (!name) return "";

@@ -1,5 +1,12 @@
 {
     "typescript.tsdk": "./node_modules/typescript/lib",
+    "search.exclude": {
+        ".idea": true,
+        ".vscode": true,
+        "node_modules": true,
+        "dist": true,
+        "test-out": true
+    },
     "files.exclude": {
         "**/.git": true,
         "**/.svn": true,

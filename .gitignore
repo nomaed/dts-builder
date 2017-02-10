@@ -2,6 +2,7 @@
 dist/
 node_modules/
 typings/
+test-out/
 *.log
 dts-builder.d.ts
 .DS_Store

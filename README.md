@@ -90,7 +90,7 @@ module dtsBuilder {
 ## Tests
 
 <!--Describe and show how to run the tests with code examples.-->
-TODO
+Currently test is basic, checking for required module and builds the generate-self package under two names.
 
 ## Contributors
 
