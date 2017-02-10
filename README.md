@@ -1,13 +1,15 @@
 # DTS-Builder
 [![Modern NodeJS](https://img.shields.io/badge/Node-6%2B-green.svg)](https://nodejs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-1.8-blue.svg)](https://www.typescriptlang.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-2.2-blue.svg)](https://www.typescriptlang.org/)
 [![Modern JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow.svg)](http://www.ecma-international.org/ecma-262/6.0/)
 [![MIT License](https://img.shields.io/badge/license-MIT-007EC7.svg)](/LICENSE)
 
 ## Synopsis
 
 <!--At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)-->
-Generates a definition library file from generated .d.ts sources.
+Assembles a singe library definition file by concatenating and cleaning up generated .d.ts files.
+
+Returns a promise with the names of bundles that have been exported.
 
 ## Code Example
 
@@ -56,7 +58,7 @@ npm install --save-dev dts-builder
 <!--Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.-->
 ```typescript
 module dtsBuilder {
-  function generateBundles(bundles: Array<Bundle>);
+  function generateBundles(bundles: Array<Bundle>): Promise<Array<string>>;
 
   interface Bundle {
       /**
@@ -64,19 +66,19 @@ module dtsBuilder {
        * @type {string}
        */
       name: string;
-      
+
       /**
        * Location in which to search for *.d.ts files
        * @type {string}
        */
       sourceDir: string;
-      
+
       /**
        * Location in which to save the output, under the name: `${name}.d.ts`
        * @type {string}
        */
       destDir: string;
-      
+
       /**
        * List of external d.ts files that will be copied to the destination
        * directory, and will be referenced from withing the main d.ts file
