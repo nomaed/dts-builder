@@ -28,10 +28,14 @@
   },
   "homepage": "https://github.com/nomaed/dts-builder#readme",
   "devDependencies": {
+    "@types/mkdirp": "^0.3.29",
     "@types/node": "^7.0.5",
     "chai": "^3.5.0",
     "mocha": "^2.5.3",
     "tslint": "^4.4.2",
     "typescript": "^2.2.0"
+  },
+  "dependencies": {
+    "mkdirp": "^0.5.1"
   }
 }
