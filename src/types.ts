@@ -6,13 +6,6 @@ export interface Bundle {
   name: string;
 
   /**
-   * If specified, library will exported as the given value, as an alias together
-   * with the original name.
-   * @type {string}
-   */
-  alias?: string;
-
-  /**
    * Location in which to search for *.d.ts files
    * @type {string}
    */
@@ -30,4 +23,21 @@ export interface Bundle {
    * @type {Array<string>}
    */
   externals?: Array<string>;
+
+  /**
+   * Wrap resulting definitions in a namespace. Set to false if files are already wrapped
+   * by namespaces.
+   * Default: true
+   * @type {boolean}
+   */
+  wrap?: boolean;
+
+  /**
+   * If specified, library will exported as the given value, as an alias together
+   * with the original name.
+   * @type {string}
+   */
+  alias?: string;
+
+
 }
