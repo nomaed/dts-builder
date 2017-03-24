@@ -39,5 +39,4 @@ export interface Bundle {
    */
   alias?: string;
 
-
 }
