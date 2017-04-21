@@ -25,8 +25,12 @@ export function generateSingleBundle(bundle: Bundle): Promise<string> {
 
         log(" + Optimizing imports...");
         txtBuffer = optimizeImports(txtBuffer);
-        log(" + Wrapping with module...");
-        txtBuffer = moduleWrap(txtBuffer, bundle);
+
+        if (bundle.wrap === undefined || bundle.wrap === true) {
+          log(" + Wrapping with module...");
+          txtBuffer = moduleWrap(txtBuffer, bundle);
+        }
+
         log(" + Removing empty lines...");
         txtBuffer = cleanEmptyLines(txtBuffer);
 
@@ -269,8 +273,6 @@ function sortMatches(a: Array<string>, b: Array<string>): number {
 function removeReferences(text: string): string {
   return text.replace(patterns.reference, "");
 }
-
-
 
 /**
  * @param {string} text
