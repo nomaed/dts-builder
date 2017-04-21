@@ -198,10 +198,17 @@ function toKebab(name: string): string {
 
 function toCamel(name: string): string {
   if (!name) return "";
-  let parts = name.split(/\W+/).map(part => part.toLowerCase());
+  const parts = name.split(/\W+/);
+
+  // if a single word, keep as is and don't camelize
+  if (parts.length === 1) return name;
+
+  // convert parts to camelCase
+  parts[0] = parts[0].toLowerCase();
   for (let i = 1; i < parts.length; i++) {
-    parts[i] = parts[i].charAt(0).toUpperCase() + parts[i].substr(1);
+    parts[i] = parts[i].charAt(0).toUpperCase() + parts[i].substr(1).toLowerCase();
   }
+
   return parts.join("");
 }
 
