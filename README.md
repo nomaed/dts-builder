@@ -1,5 +1,5 @@
 # DTS-Builder
-[![Modern NodeJS](https://img.shields.io/badge/Node-6%2B-green.svg)](https://nodejs.org/)
+[![Modern NodeJS](https://img.shields.io/badge/Node-4%2B-green.svg)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-2.2-blue.svg)](https://www.typescriptlang.org/)
 [![Modern JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow.svg)](http://www.ecma-international.org/ecma-262/6.0/)
 [![MIT License](https://img.shields.io/badge/license-MIT-007EC7.svg)](/LICENSE)
