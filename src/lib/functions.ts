@@ -83,10 +83,6 @@ function filesToString(files: Array<string>): Promise<string> {
   });
 }
 
-/**
- * @param {string} txtBuffer
- * @returns {string}
- */
 function optimizeImports(txtBuffer: string): string {
   // remove imports
   let result = txtBuffer.replace(patterns.externalModule, "");
@@ -117,11 +113,6 @@ function optimizeImports(txtBuffer: string): string {
   return result;
 }
 
-/**
- * @param {string} text
- * @param {Bundle} bundle
- * @returns {string}
- */
 function moduleWrap(text: string, bundle: Bundle): string {
   log(" * Converting to module...");
   const camelName = toCamel(bundle.name);
@@ -147,8 +138,6 @@ declare namespace ${camelName} {`);
 
 /**
  * Remove empty lines, when 2 or more in a sequence
- * @param {string} text
- * @returns {string}
  */
 function cleanEmptyLines(text: string): string {
   let prevEmpty = false;
@@ -160,10 +149,6 @@ function cleanEmptyLines(text: string): string {
   }).join("\n");
 }
 
-/**
- * @param {Bundle} bundle
- * @returns {string}
- */
 function addExternalRefs(bundle: Bundle) {
   if (!bundle || !bundle.externals) return "";
   const res = bundle.externals.map(ref => {
@@ -216,22 +201,14 @@ function toCamel(name: string): string {
   return parts.join("");
 }
 
-/**
- * @param {string} src
- * @param {string} dst
- * @returns {string}
- */
 function pathAppend(src: string, dst: string): string {
   src = src.trim().replace(/\/+$/, "");
   dst = dst.trim().replace(/^\/+/, "");
   return [src, dst].join("/");
 }
 
-
 /**
  * Returns unique array elements
- * @param {Array} arr
- * @returns {Array}
  */
 function getUnique<T>(arr: Array<T>): Array<T> {
   let res: Array<T> = [];
@@ -241,10 +218,6 @@ function getUnique<T>(arr: Array<T>): Array<T> {
   return res;
 }
 
-/**
- * @param {Array} arr
- * @returns {Array}
- */
 function sortInternals(arr: Array<string>): Array<string> {
   return arr
     .map(line => line.match(patterns.internalModuleParts))
@@ -252,12 +225,6 @@ function sortInternals(arr: Array<string>): Array<string> {
     .map(obj => obj && `import ${obj[1]} = ${obj[2]};` || "");
 }
 
-/**
- * @param {Array} a
- * @param {Array} b
- * @returns {number}
- * @private
- */
 function sortMatches(a: Array<string>, b: Array<string>): number {
   const impA = a[2].toLowerCase();
   const impB = b[2].toLowerCase();
@@ -266,18 +233,10 @@ function sortMatches(a: Array<string>, b: Array<string>): number {
   return 0;
 }
 
-/**
- * @param {string} text
- * @returns {string}
- */
 function removeReferences(text: string): string {
   return text.replace(patterns.reference, "");
 }
 
-/**
- * @param {string} text
- * @returns {string}
- */
 function removeDefaults(text: string): string {
   return text
     .replace(patterns.defaultExport, "")

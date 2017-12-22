@@ -12,9 +12,6 @@ export function findFiles(dir: string, match: RegExp = /\.d\.ts$/): Promise<Arra
 
 /**
  * Iterate over directories and find all matching files (synchronous)
- * @param {string} dir
- * @param {RegExp} match
- * @returns {Promise}
  */
 function getMatches(dir: string, match: RegExp): Promise<Array<string>> {
   return new Promise((resolve, reject) => {

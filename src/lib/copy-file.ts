@@ -1,10 +1,7 @@
 import * as fs from "fs";
 
 /**
- * @link http://stackoverflow.com/a/14387791
- * @param {string} source filename
- * @param {string} target filename
- * @param {Function} cb
+ * @see http://stackoverflow.com/a/14387791
  */
 export function copyFile(source: string, target: string, cb: (err?: NodeJS.ErrnoException, target?: string) => any) {
 

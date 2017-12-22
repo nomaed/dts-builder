@@ -13,7 +13,6 @@ export const DTSBuilderOptions = {
 /**
  * Receives a list of Bundles and generates the d.ts file according
  * to bundle configuration.
- * @param {Array<Bundle>} bundles
  */
 export function generateBundles(bundles: Array<Bundle>): Promise<Array<string>> {
   const finishedBundles: Array<string> = [];
