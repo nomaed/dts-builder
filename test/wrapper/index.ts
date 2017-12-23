@@ -5,9 +5,6 @@
 import * as hlp from "./helper";
 
 export namespace Wrapper {
-    /** stuff with import to check stuff */
-    export const imports: string = "import";
-
     export function myWrapperFunction(a: number): string {
         hlp.Wrapper.helper();
         return String(a);
