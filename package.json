@@ -1,5 +1,5 @@
 {
-  "name": "dts-builder",
+  "name": "@skymaker/dts-builder",
   "version": "1.1.5",
   "description": "Generates a definition library file from generated .d.ts sources",
   "main": "dist/index.js",
