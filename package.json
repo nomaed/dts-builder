@@ -6,7 +6,7 @@
   "types": "dts-builder.d.ts",
   "scripts": {
     "clean": "rm -rf dist test-out",
-    "prepublish": "npm run build && npm run test",
+    "prepublishOnly": "npm run build && npm run test",
     "build": "npm run lint && tsc && node ./dist/generate-self",
     "lint": "tslint --project tsconfig.json --config tslint.json --format verbose",
     "test": "node test.js"
