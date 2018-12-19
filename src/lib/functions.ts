@@ -94,6 +94,9 @@ function optimizeImports(txtBuffer: string): string {
   // remove internal imports
   result = result.replace(patterns.internalModule, "");
 
+  // remove internal inline imports
+  result = result.replace(patterns.internalInlineModule, "");
+
   const remaining = result.match(/\bimport\b/);
   if (remaining && remaining.length) {
     throw new Error(`optimizeImports() could not deal with the following: ${JSON.stringify(remaining, null, 2)}`);

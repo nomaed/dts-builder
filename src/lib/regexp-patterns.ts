@@ -10,6 +10,9 @@ export const externalReExports = /^\s*export\s+[\*\{}\w\s\n, ]+\s+from\s['"].+['
 // Catching all: import ...;
 export const internalModule = /^(\s*import\s+.*;)$/gm;
 
+// example: import("./bar").Foo;
+export const internalInlineModule = /\b(import\(.*)\./gm;
+
 // example: import foo = barbar.thisIsFoo;
 export const internalModuleParts = /^import\s+([a-zA-Z]+)\s*=\s*([a-zA-Z\.0-9_]+);$/;
 
