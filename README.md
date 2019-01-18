@@ -4,6 +4,14 @@
 [![Modern JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow.svg)](http://www.ecma-international.org/ecma-262/6.0/)
 [![MIT License](https://img.shields.io/badge/license-MIT-007EC7.svg)](/LICENSE)
 
+## Project status
+
+*Note: This project is in mainteinance mode.*
+
+This tool was created to help with a TS library that I was writing. However, I am no longer part of this project and also it seems that there are actively maintained tools out there that do the job in a smarter way that concanetation + regexp replacements.
+
+If you are using dts-builder and find bugs, I'd be happy to fix them. If you want to improve, please create pull requests or fork and hack away :)
+
 ## Synopsis
 
 <!--At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)-->
