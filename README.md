@@ -12,6 +12,10 @@ This tool was created to help with a TS library that I was writing. However, I a
 
 If you are using dts-builder and find bugs, I'd be happy to fix them. If you want to improve, please create pull requests or fork and hack away :)
 
+### Rollup
+
+If you are using Rollup to bundle your code, consider using https://github.com/Swatinem/rollup-plugin-dts plugin, it looks quite promising.
+
 ## Synopsis
 
 <!--At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)-->
