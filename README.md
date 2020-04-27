@@ -6,7 +6,7 @@
 
 ## Project status
 
-*Note: This project is in mainteinance mode.*
+*Note: This project is in maintenance mode.*
 
 This tool was created to help with a TS library that I was writing. However, I am no longer part of this project and also it seems that there are actively maintained tools out there that do the job in a smarter way than concanetation + regexp replacements.
 
